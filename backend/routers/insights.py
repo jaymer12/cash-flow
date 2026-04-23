@@ -74,7 +74,7 @@ def analyze_spending(
         response = model.generate_content(prompt)
         insights = response.text
     except Exception as e:
-        insights = f"AI insights temporarily unavailable. Here's your summary: Total income ${total_income:.2f}, Total expenses ${total_expenses:.2f}, Balance ${total_income - total_expenses:.2f}."
+        insights = f"Error: {str(e)}"
 
     return {
         "month": month,
