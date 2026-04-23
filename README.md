@@ -11,6 +11,26 @@ A full-stack personal finance web application built with FastAPI, React, and Pos
 - 📅 Filter by month and year
 - 📱 Responsive design
 
+## 📸 Screenshots
+
+### Login
+![Login](screenshots/login.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Expenses
+![Expenses](screenshots/expenses.png)
+
+### Expenses-Form
+![Expenses](screenshots/expenses-form.png)
+
+### Budgets
+![Budgets](screenshots/budgets.png)
+
+### Budgets-Form
+![Budgets](screenshots/budgets-form.png)
+
 ## 🛠️ Tech Stack
 **Backend:**
 - Python, FastAPI
