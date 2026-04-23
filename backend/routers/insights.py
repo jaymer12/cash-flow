@@ -1,18 +1,14 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import extract
 from database import get_db
 from auth import get_current_user
 import models
 from datetime import datetime
-import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-1.5-flash")
 
 router = APIRouter(prefix="/insights", tags=["AI Insights"])
 
@@ -27,14 +23,12 @@ def analyze_spending(
     month = month or now.month
     year = year or now.year
 
-    # Get expenses
     expenses = db.query(models.Expense).filter(
         models.Expense.owner_id == current_user.id,
         extract("month", models.Expense.date) == month,
         extract("year", models.Expense.date) == year
     ).all()
 
-    # Get budgets
     budgets = db.query(models.Budget).filter(
         models.Budget.owner_id == current_user.id,
         models.Budget.month == month,
@@ -44,7 +38,6 @@ def analyze_spending(
     if not expenses:
         return {"insights": "No expenses found for this month. Start tracking your spending to get AI insights!"}
 
-    # Build summary
     total_income = sum(e.amount for e in expenses if e.type == "income")
     total_expenses = sum(e.amount for e in expenses if e.type == "expense")
 
@@ -55,7 +48,6 @@ def analyze_spending(
 
     budget_info = {b.category: b.limit_amount for b in budgets}
 
-    # Build prompt
     prompt = f"""
     You are a personal finance advisor. Analyze this user's spending for {month}/{year}:
 
@@ -75,12 +67,19 @@ def analyze_spending(
     Keep it under 150 words total.
     """
 
-    response = model.generate_content(prompt)
+    try:
+        import google.generativeai as genai
+        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(prompt)
+        insights = response.text
+    except Exception as e:
+        insights = f"AI insights temporarily unavailable. Here's your summary: Total income ${total_income:.2f}, Total expenses ${total_expenses:.2f}, Balance ${total_income - total_expenses:.2f}."
 
     return {
         "month": month,
         "year": year,
         "total_income": total_income,
         "total_expenses": total_expenses,
-        "insights": response.text
+        "insights": insights
     }

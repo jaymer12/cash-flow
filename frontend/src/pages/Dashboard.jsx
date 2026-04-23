@@ -26,7 +26,7 @@ export default function Dashboard({ token }) {
     setLoading(false)
   }
 
-  const pieData = summary
+  const pieData = summary && summary.category_totals
     ? Object.entries(summary.category_totals).map(([name, value]) => ({ name, value }))
     : []
 
