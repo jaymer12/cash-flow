@@ -14,6 +14,7 @@ app = FastAPI(title="CashFlow API", version="1.0")
 
 origins = [
     "http://localhost:5173",
+    "https://cash-flow-delta-three.vercel.app",
     os.getenv("FRONTEND_URL", ""),
 ]
 

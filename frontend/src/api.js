@@ -1,4 +1,4 @@
-const BASE_URL = "https://your-railway-url.up.railway.app"
+const BASE_URL = "https://cash-flow-production-5baf.up.railway.app"
 
 export const api = {
   // Auth
