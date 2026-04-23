@@ -1,4 +1,5 @@
 const BASE_URL = "https://cash-flow-production-5baf.up.railway.app"
+// const BASE_URL = "http://127.0.0.1:8000"
 
 export const api = {
   // Auth
@@ -111,5 +112,12 @@ export const api = {
       headers: { Authorization: `Bearer ${token}` }
     })
     return res.json()
-  }
+  },
+  
+  getInsights: async (token, month, year) => {
+    const res = await fetch(`${BASE_URL}/insights/analyze?month=${month}&year=${year}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    return res.json()
+  },
 }

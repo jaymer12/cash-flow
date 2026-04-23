@@ -4,6 +4,7 @@ from routers.auth import router as auth_router
 from routers.expenses import router as expenses_router
 from routers.budgets import router as budgets_router
 from routers.dashboard import router as dashboard_router
+from routers.insights import router as insights_router
 import models
 from database import engine
 import os
@@ -30,6 +31,7 @@ app.include_router(auth_router)
 app.include_router(expenses_router)
 app.include_router(budgets_router)
 app.include_router(dashboard_router)
+app.include_router(insights_router)
 
 @app.get("/")
 def home():

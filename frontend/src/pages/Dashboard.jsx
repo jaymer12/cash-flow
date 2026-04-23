@@ -12,6 +12,8 @@ export default function Dashboard({ token }) {
   const now = new Date()
   const [month, setMonth] = useState(now.getMonth() + 1)
   const [year, setYear] = useState(now.getFullYear())
+  const [insights, setInsights] = useState(null)
+  const [insightsLoading, setInsightsLoading] = useState(false)
 
   useEffect(() => {
     loadSummary()
@@ -29,6 +31,13 @@ export default function Dashboard({ token }) {
     : []
 
   const budgetData = summary?.budget_summary || []
+
+  const loadInsights = async () => {
+    setInsightsLoading(true)
+    const data = await api.getInsights(token, month, year)
+    setInsights(data.insights)
+    setInsightsLoading(false)
+  }
 
   return (
     <div>
@@ -136,6 +145,25 @@ export default function Dashboard({ token }) {
               </div>
             ) : (
               <p className="text-center text-gray-400 py-4">No expenses this month</p>
+            )}
+          </div>
+
+          {/* AI Insights */}
+          <div className="bg-white p-5 rounded-2xl shadow mt-4">
+            <div className="flex justify-between items-center mb-3">
+              <h2 className="font-semibold text-gray-700">🤖 AI Spending Insights</h2>
+              <button
+                onClick={loadInsights}
+                disabled={insightsLoading}
+                className="bg-blue-600 text-white px-4 py-1.5 rounded-lg text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-50"
+              >
+                {insightsLoading ? "Analyzing..." : "Get AI Insights"}
+              </button>
+            </div>
+            {insights ? (
+              <p className="text-gray-700 text-sm whitespace-pre-line">{insights}</p>
+            ) : (
+              <p className="text-gray-400 text-sm">Click "Get AI Insights" to analyze your spending with AI.</p>
             )}
           </div>
         </>
