@@ -11,6 +11,10 @@ A full-stack personal finance web application built with FastAPI, React, and Pos
 - 📅 Filter by month and year
 - 📱 Responsive design
 
+## 🌐 Live Demo
+- Frontend: https://cash-flow-delta-three.vercel.app
+- Backend API: https://cash-flow-production-5baf.up.railway.app/docs
+
 ## 📸 Screenshots
 
 ### Login
