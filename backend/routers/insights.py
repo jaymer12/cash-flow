@@ -5,15 +5,16 @@ from database import get_db
 from auth import get_current_user
 import models
 from datetime import datetime
-from openai import OpenAI
+import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-router = APIRouter(prefix="/insights", tags=["AI Insights"])
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+router = APIRouter(prefix="/insights", tags=["AI Insights"])
 
 @router.get("/analyze")
 def analyze_spending(
@@ -74,18 +75,12 @@ def analyze_spending(
     Keep it under 150 words total.
     """
 
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=200
-    )
-
-    insights = response.choices[0].message.content
+    response = model.generate_content(prompt)
 
     return {
         "month": month,
         "year": year,
         "total_income": total_income,
         "total_expenses": total_expenses,
-        "insights": insights
+        "insights": response.text
     }
