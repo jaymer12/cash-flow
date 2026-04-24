@@ -2,6 +2,9 @@
 
 A full-stack personal finance web application built with FastAPI, React, and PostgreSQL.
 
+- Integrated Google Cohere AI API to generate personalized spending insights and financial recommendations
+- Tech Stack: FastAPI, Python, PostgreSQL, React, Tailwind CSS, JWT, Recharts, Cohere AI, Vercel, Railway
+  
 ## ✨ Features
 - 🔐 User authentication (Register, Login, Forgot Password)
 - 💸 Track expenses and income with categories
