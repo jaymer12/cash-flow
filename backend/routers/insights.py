@@ -68,11 +68,13 @@ def analyze_spending(
     """
 
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel("gemini-2.0-flash")
-        response = model.generate_content(prompt)
-        insights = response.text
+        import cohere
+        co = cohere.ClientV2(api_key=os.getenv("COHERE_API_KEY"))
+        response = co.chat(
+            model="command-r",
+            messages=[{"role": "user", "content": prompt}]
+        )
+        insights = response.message.content[0].text
     except Exception as e:
         insights = f"Error: {str(e)}"
 
