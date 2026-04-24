@@ -71,7 +71,7 @@ def analyze_spending(
         import cohere
         co = cohere.ClientV2(api_key=os.getenv("COHERE_API_KEY"))
         response = co.chat(
-            model="command-r",
+            model="command-r-plus-08-2024",
             messages=[{"role": "user", "content": prompt}]
         )
         insights = response.message.content[0].text
